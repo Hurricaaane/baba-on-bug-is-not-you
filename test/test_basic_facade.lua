@@ -2,7 +2,6 @@
 
 require('./../game/Data/syntax')
 require('./../game/Data/rules')
-require('./../game/Data/constants')
 require('./../game/Data/load')
 require('./../game/Data/values')
 require('./../game/Data/metadata')
@@ -25,6 +24,12 @@ function TestBasicAssumptions:setUp()
 end
 function TestBasicAssumptions:tearDown()
     mmf.forget()
+end
+
+local function generate(generatorFn)
+    local obj = {}
+    generatorFn(obj)
+    return obj
 end
 
 function TestBasicAssumptions:test_it_should_have_a_features_global_variable_after_clearing()
@@ -53,22 +58,23 @@ function TestBasicAssumptions:test_it_should_run_native_biy_code_without_excepti
 end
 
 function TestBasicAssumptions:test_it_should_run_native_biy_add_unit_without_exception()
-    local constants = biy:constants()
     mmf.when.newObject("unknown_id_format_1").thenReturn({values = {}})
     mmf.when.newObject("unknown_id_format_2").thenReturn({values = {}})
     local unit = {
         className = "unknown_classname_format",
-        values = {},
-        strings = {},
+        values = generate(function(obj)
+            obj[biy.constants.xpos] = 0
+            obj[biy.constants.ypos] = 0
+            obj[biy.constants.tiling] = 1
+            obj[biy.constants.dir] = 0
+            obj[biy.constants.float] = 0
+        end),
+        strings = generate(function(obj)
+            obj[biy.constants.unitname] = "ignored"
+            obj[biy.constants.unittype] = "text"
+        end),
         fixed = "some_unit_fixed_id"
     }
-    unit.values[constants.xpos] = 0
-    unit.values[constants.ypos] = 0
-    unit.values[constants.tiling] = 1
-    unit.values[constants.dir] = 0
-    unit.values[constants.float] = 0
-    unit.strings[constants.unitname] = "ignored"
-    unit.strings[constants.unittype] = "text"
     mmf.when.newObject("some_unit_fixed_id").thenReturn(unit)
 
     -- Exercise

@@ -1,5 +1,7 @@
 local M = {}
 
+require('./../game/Data/constants')
+
 local Facade = {}
 
 function Facade:runClear()
@@ -42,11 +44,9 @@ function Facade:setDataFeatures(value)
     features = value
 end
 
-function Facade:constants()
-    self._consts = self._consts or {
-        online = ONLINE, type = TYPE, tiling = TILING, xpos = XPOS, ypos = YPOS, dir = DIR, effect = EFFECT, effectcount = EFFECTCOUNT, visualdir = VISUALDIR, float = FLOAT, completed = COMPLETED, visuallevel = VISUALLEVEL, visualstyle = VISUALSTYLE, zlayer = ZLAYER, pushed = PUSHED, moved = MOVED, id = ID, positioning = POSITIONING, name = NAME, unittype = UNITTYPE, unitname = UNITNAME, u_levelfile = U_LEVELFILE, u_levelname = U_LEVELNAME, clearcolour = CLEARCOLOUR, colour = COLOUR, wobble = WOBBLE, outline = OUTLINE, maplevel = MAPLEVEL, dead = DEAD, infront = INFRONT, converted = CONVERTED, path_style = PATH_STYLE, path_gate = PATH_GATE, path_requirement = PATH_REQUIREMENT, path_target = PATH_TARGET, mode = MODE, shake = SHAKE, currid = CURRID, tilesize = TILESIZE, roomsizex = ROOMSIZEX, roomsizey = ROOMSIZEY, ineditor = INEDITOR, transitioned = TRANSITIONED, ignore = IGNORE, transitionreason = TRANSITIONREASON, wintimer = WINTIMER, fasttransition = FASTTRANSITION, onlyarrows = ONLYARROWS, world = WORLD, currlevel = CURRLEVEL, levelname = LEVELNAME, parent = PARENT, build = BUILD, levelnumber_name = LEVELNUMBER_NAME, lang = LANG, path_object = PATH_OBJECT, particlemult = PARTICLEMULT, undotooltiptimer = UNDOTOOLTIPTIMER, noplayer = NOPLAYER, roomrotation = ROOMROTATION, undotooltip = UNDOTOOLTIP, inmenu = INMENU, levelwobble = LEVELWOBBLE, zoom = ZOOM, saveslot = SAVESLOT, endinggoing = ENDINGGOING, buttonprompttype = BUTTONPROMPTTYPE, unlock = UNLOCK, unlocktimer = UNLOCKTIMER, mapclear = MAPCLEAR, previouslevel = PREVIOUSLEVEL, turnsound = TURNSOUND, removalsound = REMOVALSOUND, levelsurrounds = LEVELSURROUNDS, music = MUSIC, oldmusic = OLDMUSIC, onlevel = ONLEVEL, spritemult = SPRITEMULT, tilemult = TILEMULT, endphase = ENDPHASE, endtimer = ENDTIMER, endcredits = ENDCREDITS, allisdone = ALLISDONE, introphase = INTROPHASE, introtimer = INTROTIMER, veryfirsttime = VERYFIRSTTIME, xvel = XVEL, yvel = YVEL, xbase = XBASE, ybase = YBASE, notabsolute = NOTABSOLUTE }
-    return self._consts
-end
+Facade.constants = {
+        online = ONLINE, type = TYPE, tiling = TILING, xpos = XPOS, ypos = YPOS, dir = DIR, effect = EFFECT, effectcount = EFFECTCOUNT, visualdir = VISUALDIR, float = FLOAT, completed = COMPLETED, visuallevel = VISUALLEVEL, visualstyle = VISUALSTYLE, zlayer = ZLAYER, pushed = PUSHED, moved = MOVED, id = ID, positioning = POSITIONING, name = NAME, unittype = UNITTYPE, unitname = UNITNAME, u_levelfile = U_LEVELFILE, u_levelname = U_LEVELNAME, clearcolour = CLEARCOLOUR, colour = COLOUR, wobble = WOBBLE, outline = OUTLINE, maplevel = MAPLEVEL, dead = DEAD, infront = INFRONT, converted = CONVERTED, path_style = PATH_STYLE, path_gate = PATH_GATE, path_requirement = PATH_REQUIREMENT, path_target = PATH_TARGET, mode = MODE, shake = SHAKE, currid = CURRID, tilesize = TILESIZE, roomsizex = ROOMSIZEX, roomsizey = ROOMSIZEY, ineditor = INEDITOR, transitioned = TRANSITIONED, ignore = IGNORE, transitionreason = TRANSITIONREASON, wintimer = WINTIMER, fasttransition = FASTTRANSITION, onlyarrows = ONLYARROWS, world = WORLD, currlevel = CURRLEVEL, levelname = LEVELNAME, parent = PARENT, build = BUILD, levelnumber_name = LEVELNUMBER_NAME, lang = LANG, path_object = PATH_OBJECT, particlemult = PARTICLEMULT, undotooltiptimer = UNDOTOOLTIPTIMER, noplayer = NOPLAYER, roomrotation = ROOMROTATION, undotooltip = UNDOTOOLTIP, inmenu = INMENU, levelwobble = LEVELWOBBLE, zoom = ZOOM, saveslot = SAVESLOT, endinggoing = ENDINGGOING, buttonprompttype = BUTTONPROMPTTYPE, unlock = UNLOCK, unlocktimer = UNLOCKTIMER, mapclear = MAPCLEAR, previouslevel = PREVIOUSLEVEL, turnsound = TURNSOUND, removalsound = REMOVALSOUND, levelsurrounds = LEVELSURROUNDS, music = MUSIC, oldmusic = OLDMUSIC, onlevel = ONLEVEL, spritemult = SPRITEMULT, tilemult = TILEMULT, endphase = ENDPHASE, endtimer = ENDTIMER, endcredits = ENDCREDITS, allisdone = ALLISDONE, introphase = INTROPHASE, introtimer = INTROTIMER, veryfirsttime = VERYFIRSTTIME, xvel = XVEL, yvel = YVEL, xbase = XBASE, ybase = YBASE, notabsolute = NOTABSOLUTE
+}
 
 function Facade:new()
     local o = {}
