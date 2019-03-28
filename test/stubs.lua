@@ -20,13 +20,44 @@ TileMap = {}
 function TileMap.new(tilemapid)
     return {
         ___is_stub = true,
-        __tilemapid = tilemapid
+        ___args = {
+            tilemapid = tilemapid
+        }
     }
 end
 
 function MF_removeblockeffect(effect)
     return {
         ___is_stub = true,
-        __effect = effect
+        ___args = {
+            effect = effect
+        }
+    }
+end
+function MF_defaultcolour(unitid)
+    return {
+        ___is_stub = true,
+        ___args = {
+            unitid = unitid
+        }
+    }
+end
+function MF_setcolour(unitid, colour1, colour2)
+    return {
+        ___is_stub = true,
+        ___args = {
+            unitid = unitid,
+            colour1 = colour1,
+            colour2 = colour2
+        }
+    }
+end
+function MF_animframe(id, unknown1)
+    return {
+        ___is_stub = true,
+        ___args = {
+            id = id,
+            unknown1 = unknown1
+        }
     }
 end
