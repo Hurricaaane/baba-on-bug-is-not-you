@@ -8,5 +8,5 @@ The game files are ignored from git through `.gitignore` for convenience.
 
 ## Run
 
-- Linux is `./test/test_basic_facade.lua`
-- Windows is `lua test\test_basic_facade.lua`
+- Linux is `./test/run_tests.lua`
+- Windows is `lua test\run_tests.lua`

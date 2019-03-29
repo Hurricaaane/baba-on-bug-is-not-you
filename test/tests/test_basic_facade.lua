@@ -1,27 +1,12 @@
-#!/usr/bin/env lua
-
-require('./../game/Data/syntax')
-require('./../game/Data/rules')
-require('./../game/Data/load')
-require('./../game/Data/values')
-require('./../game/Data/metadata')
-require('./../game/Data/tools')
-require('./../game/Data/colours')
-require('./../game/Data/blocks')
-require('./../game/Data/features')
-
-require('test/stubs')
-local biy = require('test/biyfacade')
+require('./test/stubs')
+local biy = require('./test/biyfacade')
 
 local biy = biy.BIY:new()
 
 local lu = require('./test/lib/luaunit/luaunit')
 local assertThat = require('test/assertl')
 
--- `inspect` is a function. Make it global so that it can be invoked from the debugger.
-inspect = require('./test/lib/inspect/inspect')
-
-TestBasicAssumptions = {}
+local TestBasicAssumptions = {}
 function TestBasicAssumptions:setUp()
     biy:runClear()
 end
@@ -95,6 +80,4 @@ function TestBasicAssumptions:test_it_should_run_native_biy_add_unit_without_exc
     -- No verification step, the runAddUnit() function has run without throwing an exception.
 end
 
-local runner = lu.LuaUnit.new()
-runner:setOutputType("tap")
-os.exit( runner:runSuite() )
+return TestBasicAssumptions

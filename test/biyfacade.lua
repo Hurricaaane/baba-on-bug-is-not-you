@@ -1,6 +1,6 @@
 local M = {}
 
-require('./../game/Data/constants')
+require('./game/Data/constants')
 
 local BIY = {}
 
