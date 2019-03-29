@@ -13,7 +13,7 @@ require('./../game/Data/features')
 require('test/stubs')
 local biy = require('test/biyfacade')
 
-local biy = biy.Facade:new()
+local biy = biy.BIY:new()
 
 local lu = require('./test/lib/luaunit/luaunit')
 local assertThat = require('test/assertl')
