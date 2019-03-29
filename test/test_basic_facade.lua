@@ -72,18 +72,13 @@ function TestBasicAssumptions:test_it_should_run_native_biy_add_unit_without_exc
     mmf.when.newObject("unknown_id_format_1").thenReturn({values = {}})
     mmf.when.newObject("unknown_id_format_2").thenReturn({values = {}})
     local unit = {
-        className = "unknown_classname_format",
+        className = biy:customGetClassNameByTileName("baba"),
         values = generate(function(obj)
             obj[biy.constants.xpos] = 0
             obj[biy.constants.ypos] = 0
-            obj[biy.constants.tiling] = 1
-            obj[biy.constants.dir] = 0
             obj[biy.constants.float] = 0
         end),
-        strings = generate(function(obj)
-            obj[biy.constants.unitname] = "ignored"
-            obj[biy.constants.unittype] = "text"
-        end),
+        strings = {},
         fixed = "some_unit_fixed_id"
     }
     mmf.when.newObject("some_unit_fixed_id").thenReturn(unit)
