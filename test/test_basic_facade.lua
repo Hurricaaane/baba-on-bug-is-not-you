@@ -16,7 +16,10 @@ local biy = require('test/biyfacade')
 local biy = biy.Facade:new()
 
 local lu = require('./test/lib/luaunit/luaunit')
-local inspect = require('./test/lib/inspect/inspect') -- `inspect` is a function
+local assertThat = require('test/assertl')
+
+-- `inspect` is a function. Make it global so that it can be invoked from the debugger.
+inspect = require('./test/lib/inspect/inspect')
 
 TestBasicAssumptions = {}
 function TestBasicAssumptions:setUp()
@@ -55,6 +58,14 @@ function TestBasicAssumptions:test_it_should_run_native_biy_code_without_excepti
 
     -- Verify
     -- No verification step, the runCode() function has run without throwing an exception.
+end
+
+function TestBasicAssumptions:test_it_should_get_a_class_name_by_name()
+    -- Exercise
+    local className = biy:customGetClassNameByTileName("baba")
+
+    -- Verify
+    assertThat(className).isEqualTo("object000")
 end
 
 function TestBasicAssumptions:test_it_should_run_native_biy_add_unit_without_exception()
