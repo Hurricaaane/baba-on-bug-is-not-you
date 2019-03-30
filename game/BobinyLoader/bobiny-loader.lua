@@ -3,5 +3,12 @@ if (__BOBINY_LOADER) then
 end
 __BOBINY_LOADER = true
 
-require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader-library")
-require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader-example")
+if (__BOBINY_T) then
+    return
+end
+
+local bobinyPrefix = ""
+
+require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library")
+local modfinder = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-modfinder")
+modfinder.loadMods()
