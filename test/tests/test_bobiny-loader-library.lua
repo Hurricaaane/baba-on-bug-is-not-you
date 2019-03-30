@@ -165,4 +165,33 @@ function TestBobinyLoader:test_it_should_multi_override_on_global_function_with_
 
 end
 
+
+function TestBobinyLoader:test_it_should_unhook_with_handle()
+    -- Exercise
+    local preHookHandle = bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+        return a .. 1, b .. 2, c .. 3
+    end)
+    local postHookHandle = bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    local overrideHandle = bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
+        local d, e, f = super(a .. "x", b .. "y", c .. "z")
+        return d .. "u", e .. "v", f .. "w"
+    end)
+    preHookHandle.unhook()
+    postHookHandle.unhook()
+    overrideHandle.unhook()
+    local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a")
+    assertThat(lastCall[2]).isEqualTo("b")
+    assertThat(lastCall[3]).isEqualTo("c")
+    assertThat(d).isEqualTo("d")
+    assertThat(e).isEqualTo("e")
+    assertThat(f).isEqualTo("f")
+
+end
+
 return TestBobinyLoader

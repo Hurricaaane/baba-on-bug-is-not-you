@@ -18,7 +18,7 @@ function BOBINY:recurseOverride(nativeFunctionName, iter, ...)
     if (iter < 1) then
         return self.native[nativeFunctionName](...)
     else
-        return self.overrides[nativeFunctionName][iter](function(...)
+        return self.overrides[nativeFunctionName][iter].injectFn(function(...)
             return self:recurseOverride(nativeFunctionName, iter - 1, ...)
         end, ...)
     end
@@ -28,8 +28,8 @@ function BOBINY:createHookFunction(nativeFunctionName)
     return function(...)
         local arguments = table.pack(...)
 
-        for _, preHookFn in ipairs(self.preHooks[nativeFunctionName]) do
-            arguments = table.pack(preHookFn(table.unpack(arguments)))
+        for _, preHookInjector in ipairs(self.preHooks[nativeFunctionName]) do
+            arguments = table.pack(preHookInjector.injectFn(table.unpack(arguments)))
         end
 
         local modifiedResult
@@ -40,8 +40,8 @@ function BOBINY:createHookFunction(nativeFunctionName)
             modifiedResult = table.pack(self.native[nativeFunctionName](table.unpack(arguments)))
         end
 
-        for _, postHookFn in ipairs(self.postHooks[nativeFunctionName]) do
-            modifiedResult = table.pack(postHookFn(table.unpack(modifiedResult)))
+        for _, postHookInjector in ipairs(self.postHooks[nativeFunctionName]) do
+            modifiedResult = table.pack(postHookInjector.injectFn(table.unpack(modifiedResult)))
         end
 
         return table.unpack(modifiedResult)
@@ -61,19 +61,61 @@ function BOBINY:createHooksIfNotExist(nativeFunctionName)
     _G[nativeFunctionName] = self:createHookFunction(nativeFunctionName)
 end
 
+local injectorIdState = 0
+local function createInjector(nativeFunctionName, injectFn)
+    injectorIdState = injectorIdState + 1
+
+    local currentInjectorId = injectorIdState
+    return {
+        id = currentInjectorId,
+        nativeFunctionName = nativeFunctionName,
+        injectFn = injectFn
+    }
+end
+
+local function removeHookWithInjectorId(hookTable, injectorId)
+    for i,_ in ipairs(hookTable) do
+        print(hookTable[i].id)
+        if (hookTable[i].id == injectorId) then
+            table.remove(hookTable, i)
+            return
+        end
+    end
+end
+
+local function createHandle(injector, hookTable)
+    return {
+        unhook = function()
+            removeHookWithInjectorId(hookTable[injector.nativeFunctionName], injector.id)
+        end
+    }
+end
+
 function BOBINY.preHook(nativeFunctionName, injectFn)
+    local injector = createInjector(nativeFunctionName, injectFn)
+
     BOBINY:createHooksIfNotExist(nativeFunctionName)
-    table.insert(BOBINY.preHooks[nativeFunctionName], injectFn)
+    table.insert(BOBINY.preHooks[nativeFunctionName], injector)
+
+    return createHandle(injector, BOBINY.preHooks)
 end
 
 function BOBINY.postHook(nativeFunctionName, injectFn)
+    local injector = createInjector(nativeFunctionName, injectFn)
+
     BOBINY:createHooksIfNotExist(nativeFunctionName)
-    table.insert(BOBINY.postHooks[nativeFunctionName], injectFn)
+    table.insert(BOBINY.postHooks[nativeFunctionName], injector)
+
+    return createHandle(injector, BOBINY.postHooks)
 end
 
 function BOBINY.override(nativeFunctionName, injectFn)
+    local injector = createInjector(nativeFunctionName, injectFn)
+
     BOBINY:createHooksIfNotExist(nativeFunctionName)
-    table.insert(BOBINY.overrides[nativeFunctionName], injectFn)
+    table.insert(BOBINY.overrides[nativeFunctionName], injector)
+
+    return createHandle(injector, BOBINY.overrides)
 end
 
 function BOBINY.removeAllHooks()
