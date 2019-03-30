@@ -7,6 +7,7 @@ local function initializer(bobinyObj)
     bobinyObj.preHooks = {}
     bobinyObj.postHooks = {}
     bobinyObj.overrides = {}
+    bobinyObj.deepOverrides = {}
     return bobinyObj
 end
 
@@ -62,10 +63,12 @@ function BOBINY:createHooksIfNotExist(nativeFunctionName)
 end
 
 local injectorIdState = 0
-local function createInjector(nativeFunctionName, injectFn)
+local function newInjectorId()
     injectorIdState = injectorIdState + 1
-
-    local currentInjectorId = injectorIdState
+    return injectorIdState
+end
+local function createInjector(nativeFunctionName, injectFn)
+    local currentInjectorId = newInjectorId()
     return {
         id = currentInjectorId,
         nativeFunctionName = nativeFunctionName,
@@ -75,7 +78,6 @@ end
 
 local function removeHookWithInjectorId(hookTable, injectorId)
     for i,_ in ipairs(hookTable) do
-        print(hookTable[i].id)
         if (hookTable[i].id == injectorId) then
             table.remove(hookTable, i)
             return
@@ -118,10 +120,37 @@ function BOBINY.override(nativeFunctionName, injectFn)
     return createHandle(injector, BOBINY.overrides)
 end
 
+function BOBINY.deepOverride(deepOverrideObject, injectFn)
+    local currentInjectorId = newInjectorId()
+
+    local previousFn = deepOverrideObject.get()
+    local deepInjector = {
+        deepOverrideObject = deepOverrideObject,
+        previousFn = previousFn
+    }
+
+    deepOverrideObject.set(function(...)
+        return injectFn(previousFn, ...)
+    end)
+
+    BOBINY.deepOverrides[currentInjectorId] = deepInjector
+
+    return {
+        unhook = function()
+            deepOverrideObject.set(previousFn)
+            BOBINY.deepOverrides[currentInjectorId] = nil
+        end
+    }
+end
+
 function BOBINY.removeAllHooks()
     for nativeFunctionName,nativeFn in pairs(BOBINY.native) do
         _G[nativeFunctionName] = nativeFn
     end
+    for _,deepInjector in pairs(BOBINY.deepOverrides) do
+        deepInjector.deepOverrideObject.set(deepInjector.previousFn)
+    end
+
     initializer(BOBINY)
 end
 

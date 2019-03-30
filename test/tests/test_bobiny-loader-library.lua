@@ -6,6 +6,20 @@ local lastCall
 local callCount
 local TestBobinyLoader = {}
 
+local FIXTURES = {
+    anObjWithBehavior = function()
+        return {
+            someInnerObject = {
+                someInnerFn = function(a, b, c)
+                    lastCall = { a, b, c }
+                    callCount = callCount + 1
+                    return "d", "e", "f"
+                end
+            }
+        }
+    end
+}
+
 function TestBobinyLoader:setUp()
     lastCall = nil
     callCount = 0
@@ -100,6 +114,31 @@ function TestBobinyLoader:test_it_should_remove_all_hooks_on_global_function()
     assertThat(f).isEqualTo("f")
 end
 
+function TestBobinyLoader:test_it_should_remove_all_hooks_on_deep_overrides()
+    local objWithBehavior = FIXTURES.anObjWithBehavior()
+
+    -- Exercise
+    bobiny.deepOverride({
+        get = function() return objWithBehavior.someInnerObject.someInnerFn end,
+        set = function(valueFn) objWithBehavior.someInnerObject.someInnerFn = valueFn end
+
+    }, function(super, a, b, c)
+        local d, e, f = super(a .. 1, b .. 2, c .. 3)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    bobiny.removeAllHooks()
+    local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a")
+    assertThat(lastCall[2]).isEqualTo("b")
+    assertThat(lastCall[3]).isEqualTo("c")
+    assertThat(d).isEqualTo("d")
+    assertThat(e).isEqualTo("e")
+    assertThat(f).isEqualTo("f")
+end
+
 
 function TestBobinyLoader:test_it_should_multi_pre_hook_on_global_function_in_order()
     -- Exercise
@@ -165,6 +204,30 @@ function TestBobinyLoader:test_it_should_multi_override_on_global_function_with_
 
 end
 
+function TestBobinyLoader:test_it_should_override_deep()
+    local objWithBehavior = FIXTURES.anObjWithBehavior()
+
+    -- Exercise
+    bobiny.deepOverride({
+        get = function() return objWithBehavior.someInnerObject.someInnerFn end,
+        set = function(valueFn) objWithBehavior.someInnerObject.someInnerFn = valueFn end
+
+    }, function(super, a, b, c)
+        local d, e, f = super(a .. 1, b .. 2, c .. 3)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a1")
+    assertThat(lastCall[2]).isEqualTo("b2")
+    assertThat(lastCall[3]).isEqualTo("c3")
+    assertThat(d).isEqualTo("d4")
+    assertThat(e).isEqualTo("e5")
+    assertThat(f).isEqualTo("f6")
+end
+
 
 function TestBobinyLoader:test_it_should_unhook_with_handle()
     -- Exercise
@@ -192,6 +255,31 @@ function TestBobinyLoader:test_it_should_unhook_with_handle()
     assertThat(e).isEqualTo("e")
     assertThat(f).isEqualTo("f")
 
+end
+
+function TestBobinyLoader:test_it_should_unhook_override_deep()
+    local objWithBehavior = FIXTURES.anObjWithBehavior()
+
+    -- Exercise
+    local handle = bobiny.deepOverride({
+        get = function() return objWithBehavior.someInnerObject.someInnerFn end,
+        set = function(valueFn) objWithBehavior.someInnerObject.someInnerFn = valueFn end
+
+    }, function(super, a, b, c)
+        local d, e, f = super(a .. 1, b .. 2, c .. 3)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    handle.unhook()
+    local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a")
+    assertThat(lastCall[2]).isEqualTo("b")
+    assertThat(lastCall[3]).isEqualTo("c")
+    assertThat(d).isEqualTo("d")
+    assertThat(e).isEqualTo("e")
+    assertThat(f).isEqualTo("f")
 end
 
 return TestBobinyLoader
