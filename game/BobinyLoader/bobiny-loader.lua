@@ -9,6 +9,7 @@ end
 
 local bobinyPrefix = ""
 
-require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library")
+local bobiny = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library")
+
 local modfinder = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-modfinder")
-modfinder.loadMods()
+modfinder.loadMods(bobiny)

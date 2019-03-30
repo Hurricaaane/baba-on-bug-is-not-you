@@ -1,6 +1,10 @@
 local M = {}
 
-local bobiny = require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader-library")
+local bobiny
+
+function M.setBobiny(bobinyProvided)
+    bobiny = bobinyProvided
+end
 
 function M.doSidewaysControls(ox, oy, dir_, playerid_)
     local isIdle = dir_ == 4

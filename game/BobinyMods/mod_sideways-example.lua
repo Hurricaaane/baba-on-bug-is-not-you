@@ -1,8 +1,9 @@
 
 local MOD = {}
 
-function MOD.load(path)
-    local sideways = require(path .. "sideways/sideways-example")
+function MOD.load(loader)
+    local sideways = require(loader.path .. "sideways/sideways-example")
+    sideways.setBobiny(loader.bobiny)
     sideways.createHookSidewaysControls()
 end
 

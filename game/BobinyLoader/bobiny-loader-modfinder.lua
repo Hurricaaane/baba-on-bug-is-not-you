@@ -31,10 +31,14 @@ function M.findAllModDescriptors()
     return modDescriptors
 end
 
-function M.loadMods()
+function M.loadMods(bobiny)
+    local loader = {
+        bobiny = bobiny,
+        path = bobinyPrefix .. "BobinyMods/"
+    }
     local modDescriptors = M.findAllModDescriptors()
     for _,modDescriptor in ipairs(modDescriptors) do
-        modDescriptor.data.load(bobinyPrefix .. "BobinyMods/")
+        modDescriptor.data.load(loader)
     end
     return modDescriptors
 end
