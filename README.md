@@ -6,7 +6,9 @@ Copy your game's `Data/` directory as a subfolder of this repository's `game/` d
 
 The game files are ignored from git through `.gitignore` for convenience.
 
-### Hook bobiny-loader
+### Modify `values.lua` so that bobiny-loader starts
+
+In order to start `bobiny-loader`, we need to modify one game file.
 
 Add the following line at the top of the game file `game/Data/values.lua` :
 
