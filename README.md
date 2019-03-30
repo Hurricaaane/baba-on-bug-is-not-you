@@ -6,7 +6,15 @@ Copy your game's `Data/` directory as a subfolder of this repository's `game/` d
 
 The game files are ignored from git through `.gitignore` for convenience.
 
-## Run
+### Hook bobiny-loader
+
+Add the following line at the top of the game file `game/Data/values.lua` :
+
+```lua
+require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader")
+```
+
+## Run tests
 
 - Linux is `./test/run_tests.lua`
 - Windows is `lua test\run_tests.lua`
