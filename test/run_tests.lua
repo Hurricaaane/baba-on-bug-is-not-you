@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
+__BOBINY_T = "./game/"
+
 require('./game/Data/syntax')
 require('./game/Data/rules')
 require('./game/Data/load')
@@ -16,6 +18,7 @@ inspect = require('./test/lib/inspect/inspect')
 local lu = require('./test/lib/luaunit/luaunit')
 
 TestBasicAssumptions = require('./test/tests/test_basic_facade')
+TestBobinyLoader = require('./test/tests/test_loader')
 
 local runner = lu.LuaUnit.new()
 runner:setOutputType("tap")

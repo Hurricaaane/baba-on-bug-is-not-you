@@ -1,0 +1,122 @@
+local assertThat = require('./test/assertl')
+
+local bobiny = require("./game/BobinyLoader/bobiny-loader-library")
+
+local lastCall
+local callCount
+local TestBobinyLoader = {}
+
+function TestBobinyLoader:setUp()
+    lastCall = nil
+    callCount = 0
+    __GLOBAL_FUNCTION = function(a, b, c)
+        lastCall = { a, b, c }
+        callCount = callCount + 1
+        return "d", "e", "f"
+    end
+end
+
+function TestBobinyLoader:tearDown()
+    __GLOBAL_FUNCTION = nil
+    bobiny.removeAllHooks()
+end
+
+function TestBobinyLoader:test_it_should_pre_hook_on_global_function()
+    -- Exercise
+    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+        return a .. 1, b .. 2, c .. 3
+    end)
+    local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a1")
+    assertThat(lastCall[2]).isEqualTo("b2")
+    assertThat(lastCall[3]).isEqualTo("c3")
+    assertThat(d).isEqualTo("d")
+    assertThat(e).isEqualTo("e")
+    assertThat(f).isEqualTo("f")
+
+end
+
+function TestBobinyLoader:test_it_should_post_hook_on_global_function()
+    -- Exercise
+    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a")
+    assertThat(lastCall[2]).isEqualTo("b")
+    assertThat(lastCall[3]).isEqualTo("c")
+    assertThat(d).isEqualTo("d4")
+    assertThat(e).isEqualTo("e5")
+    assertThat(f).isEqualTo("f6")
+end
+
+function TestBobinyLoader:test_it_should_remove_all_hooks_on_global_function()
+    -- Exercise
+    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+        return a .. 1, b .. 2, c .. 3
+    end)
+    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    bobiny.removeAllHooks()
+    local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a")
+    assertThat(lastCall[2]).isEqualTo("b")
+    assertThat(lastCall[3]).isEqualTo("c")
+    assertThat(d).isEqualTo("d")
+    assertThat(e).isEqualTo("e")
+    assertThat(f).isEqualTo("f")
+end
+
+
+function TestBobinyLoader:test_it_should_pre_hook_on_global_function_in_order()
+    -- Exercise
+    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+        return a .. 1, b .. 2, c .. 3
+    end)
+    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+        return a .. 4, b .. 5, c .. 6
+    end)
+    local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a14")
+    assertThat(lastCall[2]).isEqualTo("b25")
+    assertThat(lastCall[3]).isEqualTo("c36")
+    assertThat(d).isEqualTo("d")
+    assertThat(e).isEqualTo("e")
+    assertThat(f).isEqualTo("f")
+
+end
+
+function TestBobinyLoader:test_it_should_multi_post_hook_on_global_function_in_order()
+    -- Exercise
+    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+        return d .. 4, e .. 5, f .. 6
+    end)
+    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+        return d .. 7, e .. 8, f .. 9
+    end)
+    local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
+
+    -- Verify
+    assertThat(callCount).isEqualTo(1)
+    assertThat(lastCall[1]).isEqualTo("a")
+    assertThat(lastCall[2]).isEqualTo("b")
+    assertThat(lastCall[3]).isEqualTo("c")
+    assertThat(d).isEqualTo("d47")
+    assertThat(e).isEqualTo("e58")
+    assertThat(f).isEqualTo("f69")
+end
+
+return TestBobinyLoader

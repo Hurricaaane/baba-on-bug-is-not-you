@@ -1,4 +1,4 @@
-game/
+game/.gitignore
 Data
 Editor
 Languages
@@ -7,3 +7,7 @@ Palettes
 Sprites
 Worlds
 .idea
+Assets.dat
+Baba Is You.exe
+gamecontrollerdb.txt
+steam_api.dll

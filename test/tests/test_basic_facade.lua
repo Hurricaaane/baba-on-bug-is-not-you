@@ -1,10 +1,10 @@
 require('./test/stubs')
-local biy = require('./test/biyfacade')
+local biyLib = require('./test/biyfacade')
 
-local biy = biy.BIY:new()
+local biy = biyLib.BIY:new()
 
 local lu = require('./test/lib/luaunit/luaunit')
-local assertThat = require('test/assertl')
+local assertThat = require('./test/assertl')
 
 local TestBasicAssumptions = {}
 function TestBasicAssumptions:setUp()
