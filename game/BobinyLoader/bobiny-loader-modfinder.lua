@@ -2,24 +2,29 @@ local M = {}
 
 local bobinyPrefix = (__BOBINY_T or "")
 
-function M._findFiles()
-    return MF_filelist("BobinyMods/", "*.lua")
-end
+local _deps = {
+    findFiles = function()
+        return MF_filelist("BobinyMods/", "*.lua")
+    end,
+    requireMod = function(path)
+        return require(path)
+    end
+}
 
-function M._requireMod(path)
-    return require(path)
+function M.dependencies(dependencyFn)
+    dependencyFn(_deps)
 end
 
 function M.findAllModDescriptors()
     local prefix = "mod_"
-    local modFiles = M._findFiles()
+    local modFiles = _deps.findFiles()
 
     local modDescriptors = {}
     for _,modFile in pairs(modFiles) do
         local fileIsAMod = modFile:sub(1, #prefix) == prefix
         if (fileIsAMod) then
             local modScript = modFile:sub(1, -5)
-            local data = M._requireMod(bobinyPrefix .. "BobinyMods/" .. modScript)
+            local data = _deps.requireMod(bobinyPrefix .. "BobinyMods/" .. modScript)
             local descriptor = {
                 name = modScript,
                 data = data

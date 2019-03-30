@@ -18,9 +18,14 @@ __BOBINY_LOADER = M
 
 local bobinyPrefix = ""
 
-local bobiny = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library")
+local _deps = {
+    bobiny = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library"),
+    modfinder = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-modfinder")
+}
 
-local modfinder = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-modfinder")
+function M.dependencies(dependencyFn)
+    dependencyFn(_deps)
+end
 
 local modsAlreadyLoaded = false
 local function doLoadMods()
@@ -29,7 +34,7 @@ local function doLoadMods()
     end
     modsAlreadyLoaded = true
 
-    modfinder.loadMods(bobiny)
+    _deps.modfinder.loadMods(_deps.bobiny)
 end
 
 function M.forget()
@@ -46,7 +51,7 @@ end
 
 function M.loadBeforeHook(nativeFunctionName)
     local hookHandle
-    hookHandle = bobiny.preHook(nativeFunctionName, function(...)
+    hookHandle = _deps.bobiny.preHook(nativeFunctionName, function(...)
         doLoadMods()
         hookHandle.unhook()
         return ...
@@ -55,7 +60,7 @@ end
 
 function M.loadAfterHook(nativeFunctionName)
     local hookHandle
-    hookHandle = bobiny.postHook(nativeFunctionName, function(...)
+    hookHandle = _deps.bobiny.postHook(nativeFunctionName, function(...)
         doLoadMods()
         hookHandle.unhook()
         return ...

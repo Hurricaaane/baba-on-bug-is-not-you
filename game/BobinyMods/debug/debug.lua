@@ -1,10 +1,12 @@
 local M = {}
 
-local bobiny
 local hookHandle
 
-function M.setBobiny(bobinyProvided)
-    bobiny = bobinyProvided
+local _deps = {
+    bobiny = nil
+}
+function M.dependencies(dependencyFn)
+    dependencyFn(_deps)
 end
 
 function M.doEnableDebugMode(...)
@@ -16,7 +18,7 @@ function M.doEnableDebugMode(...)
 end
 
 function M.createHookEnableDebugMode()
-    hookHandle = bobiny.postHook("init", M.doEnableDebugMode)
+    hookHandle = _deps.bobiny.postHook("init", M.doEnableDebugMode)
 end
 
 return M

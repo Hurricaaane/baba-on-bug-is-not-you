@@ -1,9 +1,10 @@
 local M = {}
 
-local bobiny
-
-function M.setBobiny(bobinyProvided)
-    bobiny = bobinyProvided
+local _deps = {
+    bobiny = nil
+}
+function M.dependencies(dependencyFn)
+    dependencyFn(_deps)
 end
 
 function M.doSidewaysControls(ox, oy, dir_, playerid_)
@@ -18,7 +19,7 @@ function M.doSidewaysControls(ox, oy, dir_, playerid_)
 end
 
 function M.createHookSidewaysControls()
-    bobiny.preHook("movecommand", M.doSidewaysControls)
+    _deps.bobiny.preHook("movecommand", M.doSidewaysControls)
 end
 
 return M

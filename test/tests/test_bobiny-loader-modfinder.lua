@@ -14,26 +14,28 @@ function TestBobinyModfinder:test_it_should_only_load_files_that_start_with_mod_
     local bobinyStub = { stub_bobiny_object = true }
     local loadExampleCalledWithLoader = false
     local loadAnotherModCalledWithLoader = false
-    modfinder._findFiles = function()
-        return { "mod_example.lua", "Mod_uppercase.lua", "notamod.lua", "mod_AnotherMod.lua" }
-    end
-    modfinder._requireMod = function(path)
-        if (path == "./game/BobinyMods/mod_example") then
-            return {
-                load = function(loader)
-                    loadExampleCalledWithLoader = loader
-                end
-            }
-        elseif (path == "./game/BobinyMods/mod_AnotherMod") then
-            return {
-                load = function(loader)
-                    loadAnotherModCalledWithLoader = loader
-                end
-            }
-        else
-            error("Unexpected require mod with path: " .. path)
+    modfinder.dependencies(function (dependencies)
+        dependencies.findFiles = function()
+            return { "mod_example.lua", "Mod_uppercase.lua", "notamod.lua", "mod_AnotherMod.lua" }
         end
-    end
+        dependencies.requireMod = function(path)
+            if (path == "./game/BobinyMods/mod_example") then
+                return {
+                    load = function(loader)
+                        loadExampleCalledWithLoader = loader
+                    end
+                }
+            elseif (path == "./game/BobinyMods/mod_AnotherMod") then
+                return {
+                    load = function(loader)
+                        loadAnotherModCalledWithLoader = loader
+                    end
+                }
+            else
+                error("Unexpected require mod with path: " .. path)
+            end
+        end
+    end)
 
     -- Exercise
     modfinder.loadMods(bobinyStub)

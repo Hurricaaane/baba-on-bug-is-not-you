@@ -2,9 +2,11 @@
 local MOD = {}
 
 function MOD.load(loader)
-    local debug = require(loader.path .. "debug/debug")
-    debug.setBobiny(loader.bobiny)
-    debug.createHookEnableDebugMode()
+    local mod = require(loader.path .. "debug/debug")
+    mod.dependencies(function(dependencies)
+        dependencies.bobiny = loader.bobiny
+    end)
+    mod.createHookEnableDebugMode()
 end
 
 return MOD
