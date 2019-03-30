@@ -13,7 +13,7 @@ In order to start *bobiny-loader*, we need to modify one game file.
 Add the following line at the top of the game file `game/Data/values.lua` :
 
 ```lua
-require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader")
+require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader").loadAfterGameInit()
 ```
 
 ## Run tests
