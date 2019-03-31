@@ -26,7 +26,8 @@ function M.findAllModDescriptors()
             local modScript = modFile:sub(1, -5)
             local data = _deps.requireMod(bobinyPrefix .. "BobinyMods/" .. modScript)
             local descriptor = {
-                name = modScript,
+                identifier = data.identifier,
+                scriptName = modScript,
                 data = data
             }
             table.insert(modDescriptors, descriptor)

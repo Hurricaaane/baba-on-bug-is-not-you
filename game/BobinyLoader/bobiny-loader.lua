@@ -24,7 +24,12 @@ local function doLoadMods()
     end
     modsAlreadyLoaded = true
 
-    _deps.modfinder.loadMods(_deps.bobiny)
+    local modDescriptors = _deps.modfinder.loadMods(_deps.bobiny)
+    for _, modDescriptor in ipairs(modDescriptors) do
+        if (type(modDescriptor.data.onAllModsLoaded) == "function") then
+            modDescriptor.data.onAllModsLoaded(modDescriptors)
+        end
+    end
 end
 
 function M.forget()
