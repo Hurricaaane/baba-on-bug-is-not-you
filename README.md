@@ -1,6 +1,12 @@
 ![Baba on Bug is not You](baba-on-bug-is-not-you.gif)
 
-## Setup
+This is an experimental modification for the game *Baba is You*.
+
+I have created it for my own personal mod development, in order to test the base game mechanics and possibly add new features on top of the base game.
+
+## Development installation
+
+The following are installation instructions intended for developers.
 
 Copy your game's `Data/` directory as a subfolder of this repository's `game/` directory, in such a way that the directory `game/Data/` will exist.
 
