@@ -1,4 +1,4 @@
-local assertThat = require('./test/assertl')
+local doAssert = require('./test/assertl')
 
 local bobiny = require("./game/BobinyLoader/bobiny-loader-library")
 
@@ -43,13 +43,13 @@ function TestBobinyLoaderLibrary:test_it_should_pre_hook_on_global_function()
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a1")
-    assertThat(lastCall[2]).isEqualTo("b2")
-    assertThat(lastCall[3]).isEqualTo("c3")
-    assertThat(d).isEqualTo("d")
-    assertThat(e).isEqualTo("e")
-    assertThat(f).isEqualTo("f")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a1")
+    doAssert.that(lastCall[2]).isEqualTo("b2")
+    doAssert.that(lastCall[3]).isEqualTo("c3")
+    doAssert.that(d).isEqualTo("d")
+    doAssert.that(e).isEqualTo("e")
+    doAssert.that(f).isEqualTo("f")
 
 end
 
@@ -61,13 +61,13 @@ function TestBobinyLoaderLibrary:test_it_should_post_hook_on_global_function()
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a")
-    assertThat(lastCall[2]).isEqualTo("b")
-    assertThat(lastCall[3]).isEqualTo("c")
-    assertThat(d).isEqualTo("d4")
-    assertThat(e).isEqualTo("e5")
-    assertThat(f).isEqualTo("f6")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a")
+    doAssert.that(lastCall[2]).isEqualTo("b")
+    doAssert.that(lastCall[3]).isEqualTo("c")
+    doAssert.that(d).isEqualTo("d4")
+    doAssert.that(e).isEqualTo("e5")
+    doAssert.that(f).isEqualTo("f6")
 end
 
 function TestBobinyLoaderLibrary:test_it_should_override_on_global_function()
@@ -79,13 +79,13 @@ function TestBobinyLoaderLibrary:test_it_should_override_on_global_function()
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a1")
-    assertThat(lastCall[2]).isEqualTo("b2")
-    assertThat(lastCall[3]).isEqualTo("c3")
-    assertThat(d).isEqualTo("d4")
-    assertThat(e).isEqualTo("e5")
-    assertThat(f).isEqualTo("f6")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a1")
+    doAssert.that(lastCall[2]).isEqualTo("b2")
+    doAssert.that(lastCall[3]).isEqualTo("c3")
+    doAssert.that(d).isEqualTo("d4")
+    doAssert.that(e).isEqualTo("e5")
+    doAssert.that(f).isEqualTo("f6")
 
 end
 
@@ -105,13 +105,13 @@ function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_global_funct
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a")
-    assertThat(lastCall[2]).isEqualTo("b")
-    assertThat(lastCall[3]).isEqualTo("c")
-    assertThat(d).isEqualTo("d")
-    assertThat(e).isEqualTo("e")
-    assertThat(f).isEqualTo("f")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a")
+    doAssert.that(lastCall[2]).isEqualTo("b")
+    doAssert.that(lastCall[3]).isEqualTo("c")
+    doAssert.that(d).isEqualTo("d")
+    doAssert.that(e).isEqualTo("e")
+    doAssert.that(f).isEqualTo("f")
 end
 
 function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_deep_overrides()
@@ -130,13 +130,13 @@ function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_deep_overrid
     local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a")
-    assertThat(lastCall[2]).isEqualTo("b")
-    assertThat(lastCall[3]).isEqualTo("c")
-    assertThat(d).isEqualTo("d")
-    assertThat(e).isEqualTo("e")
-    assertThat(f).isEqualTo("f")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a")
+    doAssert.that(lastCall[2]).isEqualTo("b")
+    doAssert.that(lastCall[3]).isEqualTo("c")
+    doAssert.that(d).isEqualTo("d")
+    doAssert.that(e).isEqualTo("e")
+    doAssert.that(f).isEqualTo("f")
 end
 
 
@@ -151,13 +151,13 @@ function TestBobinyLoaderLibrary:test_it_should_multi_pre_hook_on_global_functio
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a14")
-    assertThat(lastCall[2]).isEqualTo("b25")
-    assertThat(lastCall[3]).isEqualTo("c36")
-    assertThat(d).isEqualTo("d")
-    assertThat(e).isEqualTo("e")
-    assertThat(f).isEqualTo("f")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a14")
+    doAssert.that(lastCall[2]).isEqualTo("b25")
+    doAssert.that(lastCall[3]).isEqualTo("c36")
+    doAssert.that(d).isEqualTo("d")
+    doAssert.that(e).isEqualTo("e")
+    doAssert.that(f).isEqualTo("f")
 
 end
 
@@ -172,13 +172,13 @@ function TestBobinyLoaderLibrary:test_it_should_multi_post_hook_on_global_functi
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a")
-    assertThat(lastCall[2]).isEqualTo("b")
-    assertThat(lastCall[3]).isEqualTo("c")
-    assertThat(d).isEqualTo("d47")
-    assertThat(e).isEqualTo("e58")
-    assertThat(f).isEqualTo("f69")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a")
+    doAssert.that(lastCall[2]).isEqualTo("b")
+    doAssert.that(lastCall[3]).isEqualTo("c")
+    doAssert.that(d).isEqualTo("d47")
+    doAssert.that(e).isEqualTo("e58")
+    doAssert.that(f).isEqualTo("f69")
 end
 
 function TestBobinyLoaderLibrary:test_it_should_multi_override_on_global_function_with_last_overrides_wrapping_previous_overrides()
@@ -194,13 +194,13 @@ function TestBobinyLoaderLibrary:test_it_should_multi_override_on_global_functio
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("ax1")
-    assertThat(lastCall[2]).isEqualTo("by2")
-    assertThat(lastCall[3]).isEqualTo("cz3")
-    assertThat(d).isEqualTo("d4u")
-    assertThat(e).isEqualTo("e5v")
-    assertThat(f).isEqualTo("f6w")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("ax1")
+    doAssert.that(lastCall[2]).isEqualTo("by2")
+    doAssert.that(lastCall[3]).isEqualTo("cz3")
+    doAssert.that(d).isEqualTo("d4u")
+    doAssert.that(e).isEqualTo("e5v")
+    doAssert.that(f).isEqualTo("f6w")
 
 end
 
@@ -219,13 +219,13 @@ function TestBobinyLoaderLibrary:test_it_should_override_deep()
     local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a1")
-    assertThat(lastCall[2]).isEqualTo("b2")
-    assertThat(lastCall[3]).isEqualTo("c3")
-    assertThat(d).isEqualTo("d4")
-    assertThat(e).isEqualTo("e5")
-    assertThat(f).isEqualTo("f6")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a1")
+    doAssert.that(lastCall[2]).isEqualTo("b2")
+    doAssert.that(lastCall[3]).isEqualTo("c3")
+    doAssert.that(d).isEqualTo("d4")
+    doAssert.that(e).isEqualTo("e5")
+    doAssert.that(f).isEqualTo("f6")
 end
 
 
@@ -247,13 +247,13 @@ function TestBobinyLoaderLibrary:test_it_should_unhook_with_handle()
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a")
-    assertThat(lastCall[2]).isEqualTo("b")
-    assertThat(lastCall[3]).isEqualTo("c")
-    assertThat(d).isEqualTo("d")
-    assertThat(e).isEqualTo("e")
-    assertThat(f).isEqualTo("f")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a")
+    doAssert.that(lastCall[2]).isEqualTo("b")
+    doAssert.that(lastCall[3]).isEqualTo("c")
+    doAssert.that(d).isEqualTo("d")
+    doAssert.that(e).isEqualTo("e")
+    doAssert.that(f).isEqualTo("f")
 
 end
 
@@ -273,13 +273,13 @@ function TestBobinyLoaderLibrary:test_it_should_unhook_override_deep()
     local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
 
     -- Verify
-    assertThat(callCount).isEqualTo(1)
-    assertThat(lastCall[1]).isEqualTo("a")
-    assertThat(lastCall[2]).isEqualTo("b")
-    assertThat(lastCall[3]).isEqualTo("c")
-    assertThat(d).isEqualTo("d")
-    assertThat(e).isEqualTo("e")
-    assertThat(f).isEqualTo("f")
+    doAssert.that(callCount).isEqualTo(1)
+    doAssert.that(lastCall[1]).isEqualTo("a")
+    doAssert.that(lastCall[2]).isEqualTo("b")
+    doAssert.that(lastCall[3]).isEqualTo("c")
+    doAssert.that(d).isEqualTo("d")
+    doAssert.that(e).isEqualTo("e")
+    doAssert.that(f).isEqualTo("f")
 end
 
 return TestBobinyLoaderLibrary

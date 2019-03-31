@@ -1,4 +1,4 @@
-local assertThat = require('./test/assertl')
+local doAssert = require('./test/assertl')
 
 local SUT = require("./game/BobinyMods/debug/debug")
 
@@ -25,7 +25,7 @@ function TestModDebug:test_it_should_enable_debug_mode()
     SUT.doEnableDebugMode()
 
     -- Verify
-    assertThat(generaldata.strings[BUILD]).isEqualTo("debug")
+    doAssert.that(generaldata.strings[BUILD]).isEqualTo("debug")
 end
 
 function TestModDebug:test_it_should_create_hook()
@@ -52,9 +52,9 @@ function TestModDebug:test_it_should_create_hook()
     hookInjectFn()
 
     -- Verify
-    assertThat(hookNativeFunctionName).isEqualTo("init")
-    assertThat(generaldata.strings[BUILD]).isEqualTo("debug")
-    assertThat(unhookCalled).isEqualTo(true)
+    doAssert.that(hookNativeFunctionName).isEqualTo("init")
+    doAssert.that(generaldata.strings[BUILD]).isEqualTo("debug")
+    doAssert.that(unhookCalled).isEqualTo(true)
 end
 
 return TestModDebug

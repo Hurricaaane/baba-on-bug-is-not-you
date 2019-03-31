@@ -1,4 +1,4 @@
-local assertThat = require('./test/assertl')
+local doAssert = require('./test/assertl')
 
 local modfinder = require("./game/BobinyLoader/bobiny-loader-modfinder")
 
@@ -45,16 +45,16 @@ function TestBobinyModfinder:test_it_should_only_load_files_that_start_with_mod_
     local modDescriptors = modfinder.loadMods(bobinyStub)
 
     -- Verify
-    assertThat(loadExampleCalledWithLoader.path).isEqualTo("./game/BobinyMods/")
-    assertThat(loadExampleCalledWithLoader.bobiny).isEqualTo(bobinyStub)
-    assertThat(loadAnotherModCalledWithLoader.path).isEqualTo("./game/BobinyMods/")
-    assertThat(loadAnotherModCalledWithLoader.bobiny).isEqualTo(bobinyStub)
-    assertThat(modDescriptors[1].data).isEqualTo(exampleMod)
-    assertThat(modDescriptors[1].identifier).isEqualTo("example-mod")
-    assertThat(modDescriptors[1].scriptName).isEqualTo("mod_example")
-    assertThat(modDescriptors[2].data).isEqualTo(anotherMod)
-    assertThat(modDescriptors[2].identifier).isEqualTo("just-Another-mod")
-    assertThat(modDescriptors[2].scriptName).isEqualTo("mod_AnotherMod")
+    doAssert.that(loadExampleCalledWithLoader.path).isEqualTo("./game/BobinyMods/")
+    doAssert.that(loadExampleCalledWithLoader.bobiny).isEqualTo(bobinyStub)
+    doAssert.that(loadAnotherModCalledWithLoader.path).isEqualTo("./game/BobinyMods/")
+    doAssert.that(loadAnotherModCalledWithLoader.bobiny).isEqualTo(bobinyStub)
+    doAssert.that(modDescriptors[1].data).isEqualTo(exampleMod)
+    doAssert.that(modDescriptors[1].identifier).isEqualTo("example-mod")
+    doAssert.that(modDescriptors[1].scriptName).isEqualTo("mod_example")
+    doAssert.that(modDescriptors[2].data).isEqualTo(anotherMod)
+    doAssert.that(modDescriptors[2].identifier).isEqualTo("just-Another-mod")
+    doAssert.that(modDescriptors[2].scriptName).isEqualTo("mod_AnotherMod")
 end
 
 return TestBobinyModfinder

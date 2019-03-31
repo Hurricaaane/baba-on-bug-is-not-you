@@ -1,10 +1,11 @@
+local doAssert = require('./test/assertl')
+
 require('./test/stubs')
 local biyLib = require('./test/biyfacade')
 
 local biy = biyLib.BIY:new()
 
 local lu = require('./test/lib/luaunit/luaunit')
-local assertThat = require('./test/assertl')
 
 local TestBasicAssumptions = {}
 function TestBasicAssumptions:setUp()
@@ -50,7 +51,7 @@ function TestBasicAssumptions:test_it_should_get_a_class_name_by_name()
     local className = biy:customGetClassNameByTileName("baba")
 
     -- Verify
-    assertThat(className).isEqualTo("object000")
+    doAssert.that(className).isEqualTo("object000")
 end
 
 function TestBasicAssumptions:test_it_should_run_native_biy_add_unit_without_exception()
