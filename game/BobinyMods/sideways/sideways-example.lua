@@ -18,7 +18,7 @@ function M.doSidewaysControls(ox, oy, dir_, playerid_)
     end
 end
 
-function M.createHookSidewaysControls()
+function M.start()
     _deps.bobiny.preHook("movecommand", M.doSidewaysControls)
 end
 

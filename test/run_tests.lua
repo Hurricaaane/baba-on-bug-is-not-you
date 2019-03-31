@@ -21,6 +21,8 @@ TestBasicAssumptions = require('./test/tests/native/test_basic_facade')
 TestBobinyEntryPoint = require('./test/tests/bobiny/test_bobiny-loader')
 TestBobinyLoaderLibrary = require('./test/tests/bobiny/test_bobiny-loader-library')
 TestBobinyModfinder = require('./test/tests/bobiny/test_bobiny-loader-modfinder')
+TestModSideways = require('./test/tests/mods/test_sideways')
+TestModDebug = require('./test/tests/mods/test_debug')
 
 local runner = lu.LuaUnit.new()
 runner:setOutputType("tap")

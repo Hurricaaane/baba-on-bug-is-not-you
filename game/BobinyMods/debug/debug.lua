@@ -17,7 +17,7 @@ function M.doEnableDebugMode(...)
     return ...
 end
 
-function M.createHookEnableDebugMode()
+function M.start()
     hookHandle = _deps.bobiny.postHook("init", M.doEnableDebugMode)
 end
 

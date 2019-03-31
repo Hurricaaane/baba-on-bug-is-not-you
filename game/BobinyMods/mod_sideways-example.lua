@@ -6,7 +6,7 @@ function MOD.load(loader)
     mod.dependencies(function(dependencies)
         dependencies.bobiny = loader.bobiny
     end)
-    mod.createHookSidewaysControls()
+    mod.start()
 end
 
 return MOD
