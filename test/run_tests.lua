@@ -17,10 +17,10 @@ inspect = require('./test/lib/inspect/inspect')
 
 local lu = require('./test/lib/luaunit/luaunit')
 
-TestBasicAssumptions = require('./test/tests/test_basic_facade')
-TestBobinyEntryPoint = require('./test/tests/test_bobiny-loader')
-TestBobinyLoaderLibrary = require('./test/tests/test_bobiny-loader-library')
-TestBobinyModfinder = require('./test/tests/test_bobiny-loader-modfinder')
+TestBasicAssumptions = require('./test/tests/native/test_basic_facade')
+TestBobinyEntryPoint = require('./test/tests/bobiny/test_bobiny-loader')
+TestBobinyLoaderLibrary = require('./test/tests/bobiny/test_bobiny-loader-library')
+TestBobinyModfinder = require('./test/tests/bobiny/test_bobiny-loader-modfinder')
 
 local runner = lu.LuaUnit.new()
 runner:setOutputType("tap")
