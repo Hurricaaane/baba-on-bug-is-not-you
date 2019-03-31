@@ -85,7 +85,7 @@ function TestBobinyEntryPoint:test_it_should_load_after_game_init()
     doAssert.that(loadModsCallCount).isEqualTo(1)
     doAssert.that(loadModsCallArgument).isEqualTo(bobinyStub)
     doAssert.that(preHookCallNativeFunctionName).isEqualTo("init")
-    doAssert.that(unhookCalled).isEqualTo(true)
+    doAssert.that(unhookCalled).isTrue()
 end
 
 function TestBobinyEntryPoint:test_it_should_load_before_hook()
@@ -114,7 +114,7 @@ function TestBobinyEntryPoint:test_it_should_load_before_hook()
     doAssert.that(loadModsCallCount).isEqualTo(1)
     doAssert.that(loadModsCallArgument).isEqualTo(bobinyStub)
     doAssert.that(preHookCallNativeFunctionName).isEqualTo("some_function_name")
-    doAssert.that(unhookCalled).isEqualTo(true)
+    doAssert.that(unhookCalled).isTrue()
 end
 
 function TestBobinyEntryPoint:test_it_should_load_after_hook()
@@ -143,7 +143,7 @@ function TestBobinyEntryPoint:test_it_should_load_after_hook()
     doAssert.that(loadModsCallCount).isEqualTo(1)
     doAssert.that(loadModsCallArgument).isEqualTo(bobinyStub)
     doAssert.that(postHookCallNativeFunctionName).isEqualTo("some_function_name")
-    doAssert.that(unhookCalled).isEqualTo(true)
+    doAssert.that(unhookCalled).isTrue()
 end
 
 function TestBobinyEntryPoint:test_it_should_load_and_then_call_all_mods_loaded()
