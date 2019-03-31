@@ -2,26 +2,20 @@ if (__BOBINY_LOADER) then
     return __BOBINY_LOADER
 end
 
-if (__BOBINY_T) then
-    __BOBINY_LOADER = {
-        forget = function() end,
-        loadNow = function() end,
-        loadAfterGameInit = function() end,
-        loadBeforeHook = function() end,
-        loadAfterHook = function() end
-    }
-    return __BOBINY_LOADER
-end
-
 local M = {}
-__BOBINY_LOADER = M
 
 local bobinyPrefix = ""
 
-local _deps = {
-    bobiny = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library"),
-    modfinder = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-modfinder")
-}
+local _deps
+if (__BOBINY_T) then
+    _deps = {}
+
+else
+    _deps = {
+        bobiny = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-library"),
+        modfinder = require(bobinyPrefix .. "BobinyLoader/bobiny-loader-modfinder")
+    }
+end
 
 function M.dependencies(dependencyFn)
     dependencyFn(_deps)
@@ -67,4 +61,41 @@ function M.loadAfterHook(nativeFunctionName)
     end)
 end
 
-return M
+if (__BOBINY_T) then
+    __BOBINY_LOADER = {
+        dependencies = function(...)
+            if __BOBINY_T_ENTRY then
+                M.dependencies(...)
+            end
+        end,
+        forget = function(...)
+            if __BOBINY_T_ENTRY then
+                M.forget(...)
+            end
+        end,
+        loadNow = function(...)
+            if __BOBINY_T_ENTRY then
+                M.loadNow(...)
+            end
+        end,
+        loadAfterGameInit = function(...)
+            if __BOBINY_T_ENTRY then
+                M.loadAfterGameInit(...)
+            end
+        end,
+        loadBeforeHook = function(...)
+            if __BOBINY_T_ENTRY then
+                M.loadBeforeHook(...)
+            end
+        end,
+        loadAfterHook = function(...)
+            if __BOBINY_T_ENTRY then
+                M.loadAfterHook(...)
+            end
+        end
+    }
+else
+    __BOBINY_LOADER = M
+end
+
+return __BOBINY_LOADER

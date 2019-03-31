@@ -18,7 +18,8 @@ inspect = require('./test/lib/inspect/inspect')
 local lu = require('./test/lib/luaunit/luaunit')
 
 TestBasicAssumptions = require('./test/tests/test_basic_facade')
-TestBobinyLoader = require('./test/tests/test_bobiny-loader-library')
+TestBobinyEntryPoint = require('./test/tests/test_bobiny-loader')
+TestBobinyLoaderLibrary = require('./test/tests/test_bobiny-loader-library')
 TestBobinyModfinder = require('./test/tests/test_bobiny-loader-modfinder')
 
 local runner = lu.LuaUnit.new()

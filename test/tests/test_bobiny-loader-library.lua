@@ -4,7 +4,7 @@ local bobiny = require("./game/BobinyLoader/bobiny-loader-library")
 
 local lastCall
 local callCount
-local TestBobinyLoader = {}
+local TestBobinyLoaderLibrary = {}
 
 local FIXTURES = {
     anObjWithBehavior = function()
@@ -20,7 +20,7 @@ local FIXTURES = {
     end
 }
 
-function TestBobinyLoader:setUp()
+function TestBobinyLoaderLibrary:setUp()
     lastCall = nil
     callCount = 0
     __GLOBAL_FUNCTION = function(a, b, c)
@@ -30,12 +30,12 @@ function TestBobinyLoader:setUp()
     end
 end
 
-function TestBobinyLoader:tearDown()
+function TestBobinyLoaderLibrary:tearDown()
     __GLOBAL_FUNCTION = nil
     bobiny.removeAllHooks()
 end
 
-function TestBobinyLoader:test_it_should_pre_hook_on_global_function()
+function TestBobinyLoaderLibrary:test_it_should_pre_hook_on_global_function()
     -- Exercise
     bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
@@ -53,7 +53,7 @@ function TestBobinyLoader:test_it_should_pre_hook_on_global_function()
 
 end
 
-function TestBobinyLoader:test_it_should_post_hook_on_global_function()
+function TestBobinyLoaderLibrary:test_it_should_post_hook_on_global_function()
     -- Exercise
     bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 4, e .. 5, f .. 6
@@ -70,7 +70,7 @@ function TestBobinyLoader:test_it_should_post_hook_on_global_function()
     assertThat(f).isEqualTo("f6")
 end
 
-function TestBobinyLoader:test_it_should_override_on_global_function()
+function TestBobinyLoaderLibrary:test_it_should_override_on_global_function()
     -- Exercise
     bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. 1, b .. 2, c .. 3)
@@ -89,7 +89,7 @@ function TestBobinyLoader:test_it_should_override_on_global_function()
 
 end
 
-function TestBobinyLoader:test_it_should_remove_all_hooks_on_global_function()
+function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_global_function()
     -- Exercise
     bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
@@ -114,7 +114,7 @@ function TestBobinyLoader:test_it_should_remove_all_hooks_on_global_function()
     assertThat(f).isEqualTo("f")
 end
 
-function TestBobinyLoader:test_it_should_remove_all_hooks_on_deep_overrides()
+function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_deep_overrides()
     local objWithBehavior = FIXTURES.anObjWithBehavior()
 
     -- Exercise
@@ -140,7 +140,7 @@ function TestBobinyLoader:test_it_should_remove_all_hooks_on_deep_overrides()
 end
 
 
-function TestBobinyLoader:test_it_should_multi_pre_hook_on_global_function_in_order()
+function TestBobinyLoaderLibrary:test_it_should_multi_pre_hook_on_global_function_in_order()
     -- Exercise
     bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
@@ -161,7 +161,7 @@ function TestBobinyLoader:test_it_should_multi_pre_hook_on_global_function_in_or
 
 end
 
-function TestBobinyLoader:test_it_should_multi_post_hook_on_global_function_in_order()
+function TestBobinyLoaderLibrary:test_it_should_multi_post_hook_on_global_function_in_order()
     -- Exercise
     bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 4, e .. 5, f .. 6
@@ -181,7 +181,7 @@ function TestBobinyLoader:test_it_should_multi_post_hook_on_global_function_in_o
     assertThat(f).isEqualTo("f69")
 end
 
-function TestBobinyLoader:test_it_should_multi_override_on_global_function_with_last_overrides_wrapping_previous_overrides()
+function TestBobinyLoaderLibrary:test_it_should_multi_override_on_global_function_with_last_overrides_wrapping_previous_overrides()
     -- Exercise
     bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. 1, b .. 2, c .. 3)
@@ -204,7 +204,7 @@ function TestBobinyLoader:test_it_should_multi_override_on_global_function_with_
 
 end
 
-function TestBobinyLoader:test_it_should_override_deep()
+function TestBobinyLoaderLibrary:test_it_should_override_deep()
     local objWithBehavior = FIXTURES.anObjWithBehavior()
 
     -- Exercise
@@ -229,7 +229,7 @@ function TestBobinyLoader:test_it_should_override_deep()
 end
 
 
-function TestBobinyLoader:test_it_should_unhook_with_handle()
+function TestBobinyLoaderLibrary:test_it_should_unhook_with_handle()
     -- Exercise
     local preHookHandle = bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
@@ -257,7 +257,7 @@ function TestBobinyLoader:test_it_should_unhook_with_handle()
 
 end
 
-function TestBobinyLoader:test_it_should_unhook_override_deep()
+function TestBobinyLoaderLibrary:test_it_should_unhook_override_deep()
     local objWithBehavior = FIXTURES.anObjWithBehavior()
 
     -- Exercise
@@ -282,4 +282,4 @@ function TestBobinyLoader:test_it_should_unhook_override_deep()
     assertThat(f).isEqualTo("f")
 end
 
-return TestBobinyLoader
+return TestBobinyLoaderLibrary
