@@ -1,7 +1,3 @@
-if (__BOBINY_LIBRARY) then
-    return __BOBINY_LIBRARY
-end
-
 local function initializer(bobinyObj)
     bobinyObj.native = {}
     bobinyObj.preHooks = {}
@@ -11,9 +7,7 @@ local function initializer(bobinyObj)
     return bobinyObj
 end
 
-__BOBINY_LIBRARY = initializer({})
-
-local BOBINY = __BOBINY_LIBRARY
+local BOBINY = initializer({})
 
 function BOBINY:recurseOverride(nativeFunctionName, iter, ...)
     if (iter < 1) then
@@ -154,4 +148,4 @@ function BOBINY.removeAllHooks()
     initializer(BOBINY)
 end
 
-return __BOBINY_LIBRARY
+return BOBINY

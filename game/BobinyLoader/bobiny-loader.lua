@@ -1,7 +1,3 @@
-if (__BOBINY_LOADER) then
-    return __BOBINY_LOADER
-end
-
 local M = {}
 
 local bobinyPrefix = ""

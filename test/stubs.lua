@@ -1,8 +1,3 @@
-if (_STUBS_IMPORTED) then
-   return
-end
-_STUBS_IMPORTED = true
-
 mmf = {}
 mmf.when = {}
 function mmf.forget()
