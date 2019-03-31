@@ -1,10 +1,11 @@
 local doAssert = require('./test/assertl')
 
-local bobiny = require("./game/BobinyLoader/bobiny-loader-library")
+local SUT = require("./game/BobinyLoader/bobiny-loader-library")
+
+local TestBobinyLoaderLibrary = {}
 
 local lastCall
 local callCount
-local TestBobinyLoaderLibrary = {}
 
 local FIXTURES = {
     anObjWithBehavior = function()
@@ -32,12 +33,12 @@ end
 
 function TestBobinyLoaderLibrary:tearDown()
     __GLOBAL_FUNCTION = nil
-    bobiny.removeAllHooks()
+    SUT.removeAllHooks()
 end
 
 function TestBobinyLoaderLibrary:test_it_should_pre_hook_on_global_function()
     -- Exercise
-    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+    SUT.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
     end)
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
@@ -55,7 +56,7 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_post_hook_on_global_function()
     -- Exercise
-    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+    SUT.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 4, e .. 5, f .. 6
     end)
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
@@ -72,7 +73,7 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_override_on_global_function()
     -- Exercise
-    bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
+    SUT.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. 1, b .. 2, c .. 3)
         return d .. 4, e .. 5, f .. 6
     end)
@@ -91,17 +92,17 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_global_function()
     -- Exercise
-    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+    SUT.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
     end)
-    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+    SUT.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 4, e .. 5, f .. 6
     end)
-    bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
+    SUT.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. 1, b .. 2, c .. 3)
         return d .. 4, e .. 5, f .. 6
     end)
-    bobiny.removeAllHooks()
+    SUT.removeAllHooks()
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
 
     -- Verify
@@ -118,7 +119,7 @@ function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_deep_overrid
     local objWithBehavior = FIXTURES.anObjWithBehavior()
 
     -- Exercise
-    bobiny.deepOverride({
+    SUT.deepOverride({
         get = function() return objWithBehavior.someInnerObject.someInnerFn end,
         set = function(valueFn) objWithBehavior.someInnerObject.someInnerFn = valueFn end
 
@@ -126,7 +127,7 @@ function TestBobinyLoaderLibrary:test_it_should_remove_all_hooks_on_deep_overrid
         local d, e, f = super(a .. 1, b .. 2, c .. 3)
         return d .. 4, e .. 5, f .. 6
     end)
-    bobiny.removeAllHooks()
+    SUT.removeAllHooks()
     local d, e, f = objWithBehavior.someInnerObject.someInnerFn("a", "b", "c")
 
     -- Verify
@@ -142,10 +143,10 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_multi_pre_hook_on_global_function_in_order()
     -- Exercise
-    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+    SUT.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
     end)
-    bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+    SUT.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 4, b .. 5, c .. 6
     end)
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
@@ -163,10 +164,10 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_multi_post_hook_on_global_function_in_order()
     -- Exercise
-    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+    SUT.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 4, e .. 5, f .. 6
     end)
-    bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+    SUT.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 7, e .. 8, f .. 9
     end)
     local d, e, f = __GLOBAL_FUNCTION("a", "b", "c")
@@ -183,11 +184,11 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_multi_override_on_global_function_with_last_overrides_wrapping_previous_overrides()
     -- Exercise
-    bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
+    SUT.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. 1, b .. 2, c .. 3)
         return d .. 4, e .. 5, f .. 6
     end)
-    bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
+    SUT.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. "x", b .. "y", c .. "z")
         return d .. "u", e .. "v", f .. "w"
     end)
@@ -208,7 +209,7 @@ function TestBobinyLoaderLibrary:test_it_should_override_deep()
     local objWithBehavior = FIXTURES.anObjWithBehavior()
 
     -- Exercise
-    bobiny.deepOverride({
+    SUT.deepOverride({
         get = function() return objWithBehavior.someInnerObject.someInnerFn end,
         set = function(valueFn) objWithBehavior.someInnerObject.someInnerFn = valueFn end
 
@@ -231,13 +232,13 @@ end
 
 function TestBobinyLoaderLibrary:test_it_should_unhook_with_handle()
     -- Exercise
-    local preHookHandle = bobiny.preHook("__GLOBAL_FUNCTION", function(a, b, c)
+    local preHookHandle = SUT.preHook("__GLOBAL_FUNCTION", function(a, b, c)
         return a .. 1, b .. 2, c .. 3
     end)
-    local postHookHandle = bobiny.postHook("__GLOBAL_FUNCTION", function(d, e, f)
+    local postHookHandle = SUT.postHook("__GLOBAL_FUNCTION", function(d, e, f)
         return d .. 4, e .. 5, f .. 6
     end)
-    local overrideHandle = bobiny.override("__GLOBAL_FUNCTION", function(super, a, b, c)
+    local overrideHandle = SUT.override("__GLOBAL_FUNCTION", function(super, a, b, c)
         local d, e, f = super(a .. "x", b .. "y", c .. "z")
         return d .. "u", e .. "v", f .. "w"
     end)
@@ -261,7 +262,7 @@ function TestBobinyLoaderLibrary:test_it_should_unhook_override_deep()
     local objWithBehavior = FIXTURES.anObjWithBehavior()
 
     -- Exercise
-    local handle = bobiny.deepOverride({
+    local handle = SUT.deepOverride({
         get = function() return objWithBehavior.someInnerObject.someInnerFn end,
         set = function(valueFn) objWithBehavior.someInnerObject.someInnerFn = valueFn end
 

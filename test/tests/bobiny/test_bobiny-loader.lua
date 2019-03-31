@@ -1,6 +1,6 @@
 local doAssert = require('./test/assertl')
 
-local bobinyEntryPoint = require("./game/BobinyLoader/bobiny-loader")
+local SUT = require("./game/BobinyLoader/bobiny-loader")
 
 local TestBobinyEntryPoint = {}
 
@@ -28,17 +28,17 @@ function TestBobinyEntryPoint:setUp()
 end
 
 function TestBobinyEntryPoint:tearDown()
-    bobinyEntryPoint.forget()
+    SUT.forget()
     __BOBINY_T_ENTRY = false
 end
 
 function TestBobinyEntryPoint:test_it_should_load_now_only_once()
     local bobinyStub = { stub_bobiny = true }
-    bobinyEntryPoint.dependencies(dependenciesWithStub(bobinyStub))
+    SUT.dependencies(dependenciesWithStub(bobinyStub))
 
     -- Exercise
-    bobinyEntryPoint.loadNow()
-    bobinyEntryPoint.loadNow()
+    SUT.loadNow()
+    SUT.loadNow()
 
     -- Verify
     doAssert.that(loadModsCallCount).isEqualTo(1)
@@ -47,12 +47,12 @@ end
 
 function TestBobinyEntryPoint:test_it_should_load_now_twice_if_forgotten()
     local bobinyStub = { stub_bobiny = true }
-    bobinyEntryPoint.dependencies(dependenciesWithStub(bobinyStub))
+    SUT.dependencies(dependenciesWithStub(bobinyStub))
 
     -- Exercise
-    bobinyEntryPoint.loadNow()
-    bobinyEntryPoint.forget()
-    bobinyEntryPoint.loadNow()
+    SUT.loadNow()
+    SUT.forget()
+    SUT.loadNow()
 
     -- Verify
     doAssert.that(loadModsCallCount).isEqualTo(2)
@@ -75,10 +75,10 @@ function TestBobinyEntryPoint:test_it_should_load_after_game_init()
             }
         end
     }
-    bobinyEntryPoint.dependencies(dependenciesWithStub(bobinyStub))
+    SUT.dependencies(dependenciesWithStub(bobinyStub))
 
     -- Exercise
-    bobinyEntryPoint.loadAfterGameInit()
+    SUT.loadAfterGameInit()
     preHookCallInjectFn("ignored")
 
     -- Verify
@@ -104,10 +104,10 @@ function TestBobinyEntryPoint:test_it_should_load_before_hook()
             }
         end
     }
-    bobinyEntryPoint.dependencies(dependenciesWithStub(bobinyStub))
+    SUT.dependencies(dependenciesWithStub(bobinyStub))
 
     -- Exercise
-    bobinyEntryPoint.loadBeforeHook("some_function_name")
+    SUT.loadBeforeHook("some_function_name")
     preHookCallInjectFn("ignored")
 
     -- Verify
@@ -133,10 +133,10 @@ function TestBobinyEntryPoint:test_it_should_load_after_hook()
             }
         end
     }
-    bobinyEntryPoint.dependencies(dependenciesWithStub(bobinyStub))
+    SUT.dependencies(dependenciesWithStub(bobinyStub))
 
     -- Exercise
-    bobinyEntryPoint.loadAfterHook("some_function_name")
+    SUT.loadAfterHook("some_function_name")
     postHookCallInjectFn("ignored")
 
     -- Verify
@@ -163,7 +163,7 @@ function TestBobinyEntryPoint:test_it_should_load_and_then_call_all_mods_loaded(
         }
     })
 
-    bobinyEntryPoint.dependencies(function(dependencies)
+    SUT.dependencies(function(dependencies)
         dependencies.bobiny = bobinyStub
         dependencies.modfinder = {
             loadMods = function(bobiny)
@@ -175,7 +175,7 @@ function TestBobinyEntryPoint:test_it_should_load_and_then_call_all_mods_loaded(
     end)
 
     -- Exercise
-    bobinyEntryPoint.loadNow()
+    SUT.loadNow()
 
     -- Verify
     doAssert.that(loadModsCallCount).isEqualTo(1)

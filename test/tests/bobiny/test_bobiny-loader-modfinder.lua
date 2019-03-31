@@ -1,6 +1,6 @@
 local doAssert = require('./test/assertl')
 
-local modfinder = require("./game/BobinyLoader/bobiny-loader-modfinder")
+local SUT = require("./game/BobinyLoader/bobiny-loader-modfinder")
 
 local TestBobinyModfinder = {}
 
@@ -26,7 +26,7 @@ function TestBobinyModfinder:test_it_should_only_load_files_that_start_with_mod_
         end,
         identifier = "just-Another-mod"
     }
-    modfinder.dependencies(function (dependencies)
+    SUT.dependencies(function (dependencies)
         dependencies.findFiles = function()
             return { "mod_example.lua", "Mod_uppercase.lua", "notamod.lua", "mod_AnotherMod.lua" }
         end
@@ -42,7 +42,7 @@ function TestBobinyModfinder:test_it_should_only_load_files_that_start_with_mod_
     end)
 
     -- Exercise
-    local modDescriptors = modfinder.loadMods(bobinyStub)
+    local modDescriptors = SUT.loadMods(bobinyStub)
 
     -- Verify
     doAssert.that(loadExampleCalledWithLoader.path).isEqualTo("./game/BobinyMods/")

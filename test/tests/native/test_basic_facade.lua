@@ -1,18 +1,21 @@
 local doAssert = require('./test/assertl')
 
 require('./test/stubs')
+
 local biyLib = require('./test/biyfacade')
 
-local biy = biyLib.BIY:new()
-
-local lu = require('./test/lib/luaunit/luaunit')
+local SUT = biyLib.BIY:new()
 
 local TestBasicAssumptions = {}
+
+local mmfMock = mmf
+
 function TestBasicAssumptions:setUp()
-    biy:runClear()
+    SUT:runClear()
 end
+
 function TestBasicAssumptions:tearDown()
-    mmf.forget()
+    mmfMock.forget()
 end
 
 local function generate(generatorFn)
@@ -23,24 +26,24 @@ end
 
 function TestBasicAssumptions:test_it_should_have_a_features_global_variable_after_clearing()
     -- Exercise
-    biy:setDataFeatures(nil)
-    biy:runClear()
-    biy:getDataFeatures()
+    SUT:setDataFeatures(nil)
+    SUT:runClear()
+    local result = SUT:getDataFeatures()
 
     -- Verify
-    lu.assertEquals({}, biy:getDataFeatures())
+    doAssert.that(result).isEqualTo({})
 end
 
 function TestBasicAssumptions:test_it_should_run_native_biy_code_without_exception()
-    mmf.when.newObject("unknown_id_format_1").thenReturn({values = {}})
-    mmf.when.newObject("unknown_id_format_2").thenReturn({values = {}})
+    mmfMock.when.newObject("unknown_id_format_1").thenReturn({values = {}})
+    mmfMock.when.newObject("unknown_id_format_2").thenReturn({values = {}})
 
     -- Exercise
-    biy:runInit({
+    SUT:runInit({
         generaldataid = "unknown_id_format_1",
         generaldataid2 = "unknown_id_format_2"
     })
-    biy:runCode()
+    SUT:runCode()
 
     -- Verify
     -- No verification step, the runCode() function has run without throwing an exception.
@@ -48,34 +51,34 @@ end
 
 function TestBasicAssumptions:test_it_should_get_a_class_name_by_name()
     -- Exercise
-    local className = biy:customGetClassNameByTileName("baba")
+    local className = SUT:customGetClassNameByTileName("baba")
 
     -- Verify
     doAssert.that(className).isEqualTo("object000")
 end
 
 function TestBasicAssumptions:test_it_should_run_native_biy_add_unit_without_exception()
-    mmf.when.newObject("unknown_id_format_1").thenReturn({values = {}})
-    mmf.when.newObject("unknown_id_format_2").thenReturn({values = {}})
+    mmfMock.when.newObject("unknown_id_format_1").thenReturn({values = {}})
+    mmfMock.when.newObject("unknown_id_format_2").thenReturn({values = {}})
     local unit = {
-        className = biy:customGetClassNameByTileName("baba"),
+        className = SUT:customGetClassNameByTileName("baba"),
         values = generate(function(obj)
-            obj[biy.constants.xpos] = 0
-            obj[biy.constants.ypos] = 0
-            obj[biy.constants.float] = 0
+            obj[SUT.constants.xpos] = 0
+            obj[SUT.constants.ypos] = 0
+            obj[SUT.constants.float] = 0
         end),
         strings = {},
         fixed = "some_unit_fixed_id"
     }
-    mmf.when.newObject("some_unit_fixed_id").thenReturn(unit)
+    mmfMock.when.newObject("some_unit_fixed_id").thenReturn(unit)
 
     -- Exercise
-    biy:runInit({
+    SUT:runInit({
         generaldataid = "unknown_id_format_1",
         generaldataid2 = "unknown_id_format_2"
     })
-    biy:setDataChanges({})
-    biy:runAddUnit({id = "some_unit_fixed_id"})
+    SUT:setDataChanges({})
+    SUT:runAddUnit({id = "some_unit_fixed_id"})
 
     -- Verify
     -- No verification step, the runAddUnit() function has run without throwing an exception.
