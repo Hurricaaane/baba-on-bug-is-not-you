@@ -23,6 +23,7 @@ TestBobinyLoaderLibrary = require('./test/tests/bobiny/test_bobiny-loader-librar
 TestBobinyModfinder = require('./test/tests/bobiny/test_bobiny-loader-modfinder')
 TestModSideways = require('./test/tests/mods/test_sideways')
 TestModDebug = require('./test/tests/mods/test_debug')
+TestPrintAll = require('./test/tests/mods/test_print-all')
 
 local runner = lu.LuaUnit.new()
 runner:setOutputType("tap")
