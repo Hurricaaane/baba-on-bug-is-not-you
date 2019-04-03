@@ -11,14 +11,20 @@ function M.dependencies(dependencyFn)
     dependencyFn(_deps)
 end
 
+local _toDebugStringFromTable
+
 local function toDebugString(arg)
     if (type(arg) == "string") then
         arg = '"' .. arg .. '"'
+
+    elseif (type(arg) == "table") then
+        arg = '{' .. _toDebugStringFromTable(arg) .. '}'
     end
+
     return tostring(arg):gsub("\n", "\\n")
 end
 
-local function toDebugStringFromTable(tableWithNilValues)
+local function toDebugStringFromArrayLikeTable(tableWithNilValues)
     local prettyArgs = ""
 
     -- Using pairs or ipairs is not possible as it handles nil values differently.
@@ -35,8 +41,37 @@ local function toDebugStringFromTable(tableWithNilValues)
     return prettyArgs
 end
 
+local function keysSorted(myTable)
+    local keys = {}
+    for k, _ in pairs(myTable) do
+        table.insert(keys, k)
+    end
+
+    table.sort(keys)
+    return keys
+end
+
+local function toDebugStringFromTable(myTable)
+    local prettyArgs = ""
+
+    local sortedKeys = keysSorted(myTable)
+    for _, key in pairs(sortedKeys) do
+        local prettyArg = key .. ' = ' .. toDebugString(myTable[key])
+
+        if prettyArgs == "" then
+            prettyArgs = prettyArg
+        else
+            prettyArgs = prettyArgs .. ", " .. prettyArg
+        end
+    end
+
+    return prettyArgs
+end
+
+_toDebugStringFromTable = toDebugStringFromTable
+
 local function toFunctionDisplay(functionName, ...)
-    local prettyArgs = toDebugStringFromTable(table.pack(...))
+    local prettyArgs = toDebugStringFromArrayLikeTable(table.pack(...))
     return functionName .. "(" .. prettyArgs ..")"
 end
 
@@ -51,7 +86,7 @@ local function scopedOverride(functionName)
         depth = depth - 1
 
         if #result > 0 then
-            _deps.printFn(call .. "\t-> " .. toDebugStringFromTable(result))
+            _deps.printFn(call .. "\t-> " .. toDebugStringFromArrayLikeTable(result))
 
         else
             _deps.printFn(call)
@@ -74,19 +109,5 @@ function M.start()
         end
     end
 end
-
---local function splitNewlines(input)
---    local t = {}
---    for sub in string.gmatch(input, "([^\n]+)") do
---        table.insert(t, sub)
---    end
---    return t
---end
---
---local function PRLOGS(message)
---    for _,line in ipairs(splitNewlines(message)) do
---        print("#~\t" .. line)
---    end
---end
 
 return M

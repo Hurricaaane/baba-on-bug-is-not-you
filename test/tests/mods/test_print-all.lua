@@ -75,7 +75,7 @@ function TestPrintAll:test_it_should_print_overriden_function()
 
     -- Exercise
     SUT.start()
-    local result = callbackArgument(myFunction, 600, nil, nil, "xyz", true, false, "abc\ndef\tghi", 1.1, nil, nil, nil)
+    callbackArgument(myFunction, 600, nil, nil, "xyz", true, false, "abc\ndef\tghi", 1.1, nil, nil, nil)
 
     -- Verify
     -- Only sanitize newlines, not anything else like tabulations.
@@ -83,7 +83,7 @@ function TestPrintAll:test_it_should_print_overriden_function()
 end
 
 function TestPrintAll:test_it_should_print_overriden_function_that_returns_nothing()
-    local myFunction = function(a)
+    local myFunction = function()
         return
     end
     local myGlobals = {
@@ -93,11 +93,29 @@ function TestPrintAll:test_it_should_print_overriden_function_that_returns_nothi
 
     -- Exercise
     SUT.start()
-    local result = callbackArgument(myFunction, 600)
+    callbackArgument(myFunction, 600)
 
     -- Verify
     -- Only sanitize newlines, not anything else like tabulations.
     doAssert.that(printFnArgument).isEqualTo("#~\tmyGlobalFunction(600)")
+end
+
+function TestPrintAll:test_it_should_print_overriden_function_with_table_arguments()
+    local myFunction = function()
+        return { e = "ee", f = "ff" }
+    end
+    local myGlobals = {
+        myGlobalFunction = myFunction
+    }
+    SUT.dependencies(injectorGenerator(myGlobals))
+
+    -- Exercise
+    SUT.start()
+    callbackArgument(myFunction, { a = "aa", b = "bb" },  { c = "cc", d = "dd" })
+
+    -- Verify
+    -- Only sanitize newlines, not anything else like tabulations.
+    doAssert.that(printFnArgument).isEqualTo("#~\tmyGlobalFunction({a = \"aa\", b = \"bb\"}, {c = \"cc\", d = \"dd\"})\t-> {e = \"ee\", f = \"ff\"}")
 end
 
 return TestPrintAll
