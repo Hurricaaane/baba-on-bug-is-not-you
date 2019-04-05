@@ -24,6 +24,7 @@ TestBobinyModfinder = require('./test/tests/bobiny/test_bobiny-loader-modfinder'
 TestModSideways = require('./test/tests/mods/test_sideways')
 TestModDebug = require('./test/tests/mods/test_debug')
 TestPrintAll = require('./test/tests/mods/test_print-all')
+TestModDumpGamestate = require('./test/tests/mods/test_dump-gamestate')
 
 local runner = lu.LuaUnit.new()
 runner:setOutputType("tap")

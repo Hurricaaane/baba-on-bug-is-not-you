@@ -1,4 +1,5 @@
 game/.gitignore
+
 Data
 Editor
 Languages
@@ -6,12 +7,23 @@ Music
 Palettes
 Sprites
 Worlds
-.idea
+
 Assets.dat
+
 Baba Is You.exe
 gamecontrollerdb.txt
 steam_api.dll
+
 icon.bmp
 run.sh
 Chowdren
 libsteam_api.so
+
+.idea
+
+node_modules
+yarn-error.log
+
+game/websocketd
+
+game/log.log

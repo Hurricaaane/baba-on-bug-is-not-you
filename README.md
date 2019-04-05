@@ -26,3 +26,17 @@ require((__BOBINY_T or "") .. "BobinyLoader/bobiny-loader").loadAfterGameInit()
 
 - Linux is `./test/run_tests.lua`
 - Windows is `lua test\run_tests.lua`
+
+## Visual log
+
+*On Windows, MINGW64 may be used to run the game.*
+
+The visual log is a tool that records the game state to a file, and exposes it through a websocket so that it can be displayed on web page.
+
+- Install [joewalnes/websocketd](https://github.com/joewalnes/websocketd). It is a tool that emits the standard stream of a process to a websocket.
+
+- Run `./start-game.sh`, which logs all lines starting with `#~\t` to a file.
+
+- Run `./log-to-websocketd.sh` which exposes the log file through a websocket using [joewalnes/websocketd](https://github.com/joewalnes/websocketd).
+
+- Run `???` to start the web application.
