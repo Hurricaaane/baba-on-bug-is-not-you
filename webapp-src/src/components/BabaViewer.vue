@@ -3,7 +3,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-6">
-                    <FeatureViewer v-bind:features="mergedData.features" class="features"/>
+                    <div class="card">
+                        <div class="card-body">
+                            <FeatureViewer v-bind:features="mergedData.features" class="features"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-6">
                     things
@@ -11,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="logs">
-                    <div v-bind:key="index" v-for="(bit,index) in bits">{{ bit }}</div>
+                    <div class="log" v-bind:key="index" v-for="(bit,index) in bits">{{ bit }}</div>
                 </div>
             </div>
         </div>
@@ -84,7 +88,8 @@
                         this.bits.shift();
                     }
 
-                    Object.assign(this.mergedData, JSON.parse(data));
+                    const parsedData = JSON.parse(data);
+                    Object.assign(this.mergedData, parsedData);
                 }
             }
         }
@@ -92,7 +97,11 @@
 </script>
 
 <style scoped>
-    .features {
-        border: 1px solid red;
+    .logs {
+        font-size: 0.8em;
+        font-family: monospace;
+    }
+    .log {
+        border-bottom: 1px solid lightgray;
     }
 </style>
