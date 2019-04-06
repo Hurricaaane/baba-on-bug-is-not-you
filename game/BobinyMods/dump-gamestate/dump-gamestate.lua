@@ -13,14 +13,14 @@ end
 
 ----
 
-local _toJsonStringFromTable
+local _toJsonStringFromTableOrArray
 
 local function toJsonString(arg)
     if (type(arg) == "string") then
         arg = '"' .. arg .. '"'
 
     elseif (type(arg) == "table") then
-        arg = '{' .. _toJsonStringFromTable(arg) .. '}'
+        arg = _toJsonStringFromTableOrArray(arg)
     end
 
     return tostring(arg)
@@ -38,7 +38,7 @@ local function keysSorted(myTable)
     return keys
 end
 
-local function tableToJsonString(myTable)
+local function objectToJsonString(myTable)
     local prettyArgs = ""
     local sortedKeys = keysSorted(myTable)
     for _, key in pairs(sortedKeys) do
@@ -51,7 +51,11 @@ local function tableToJsonString(myTable)
         end
     end
 
-    return prettyArgs
+    if (prettyArgs == "") then
+        return '{"array":[]}'
+    else
+        return '{' .. prettyArgs .. ', "array":[]}'
+    end
 end
 
 local function arrayToJsonString(myArray)
@@ -63,18 +67,19 @@ local function arrayToJsonString(myArray)
             arrayValues = arrayValues .. "," .. toJsonString(arrayValue)
         end
     end
-    return '"array":[' .. arrayValues .. "]"
+    return '{"array":[' .. arrayValues .. "]}"
 end
 
-local function toJsonStringFromUnknownTable(unknownTable)
-    if (unknownTable[#unknownTable] ~= nil) then
-        return arrayToJsonString(unknownTable)
+local function toJsonStringFromObjectOrArray(unknownTable)
+    if (unknownTable[#unknownTable] == nil) then
+        return objectToJsonString(unknownTable)
+
     else
-        return tableToJsonString(unknownTable)
+        return arrayToJsonString(unknownTable)
     end
 end
 
-_toJsonStringFromTable = toJsonStringFromUnknownTable
+_toJsonStringFromTableOrArray = toJsonStringFromObjectOrArray
 ----
 
 local memory = {}

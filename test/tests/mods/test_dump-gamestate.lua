@@ -26,7 +26,7 @@ function TestModDumpGamestate:tearDown()
     SUT.flushMemory()
 end
 
-function TestModDumpGamestate:test_it_dump_game_state_on_first_tick()
+function TestModDumpGamestate:test_it_should_dump_game_state_on_first_tick()
     features = {
         a = 1,
         b = 2
@@ -37,10 +37,10 @@ function TestModDumpGamestate:test_it_dump_game_state_on_first_tick()
 
     -- Verify
     doAssert.that(outputCallCount).isEqualTo(1)
-    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"a":1, "b":2}}')
+    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"a":1, "b":2, "array":[]}}')
 end
 
-function TestModDumpGamestate:test_it_dump_game_state_only_once_per_identical_key()
+function TestModDumpGamestate:test_it_should_dump_game_state_only_once_per_identical_key()
     features = {
         a = 1,
         b = 2
@@ -52,10 +52,10 @@ function TestModDumpGamestate:test_it_dump_game_state_only_once_per_identical_ke
 
     -- Verify
     doAssert.that(outputCallCount).isEqualTo(1)
-    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"a":1, "b":2}}')
+    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"a":1, "b":2, "array":[]}}')
 end
 
-function TestModDumpGamestate:test_it_dump_game_state_after_memory_is_flushed()
+function TestModDumpGamestate:test_it_should_dump_game_state_after_memory_is_flushed()
     features = {
         c = 3,
         d = 4
@@ -72,10 +72,10 @@ function TestModDumpGamestate:test_it_dump_game_state_after_memory_is_flushed()
 
     -- Verify
     doAssert.that(outputCallCount).isEqualTo(2)
-    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"a":1, "b":2}}')
+    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"a":1, "b":2, "array":[]}}')
 end
 
-function TestModDumpGamestate:test_it_dump_arraylike_game_state_as_arrays()
+function TestModDumpGamestate:test_it_should_dump_arraylike_game_state_as_arrays()
     features = {}
     table.insert(features, "baba")
     table.insert(features, "is")
@@ -87,6 +87,17 @@ function TestModDumpGamestate:test_it_dump_arraylike_game_state_as_arrays()
     -- Verify
     doAssert.that(outputCallCount).isEqualTo(1)
     doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"array":["baba","is","you"]}}')
+end
+
+function TestModDumpGamestate:test_it_should_dump_empty_table()
+    features = { }
+
+    -- Exercise
+    SUT.doDumpGameState()
+
+    -- Verify
+    doAssert.that(outputCallCount).isEqualTo(1)
+    doAssert.that(outputArgument).isEqualTo('#~\t{"features":{"array":[]}}')
 end
 
 return TestModDumpGamestate
