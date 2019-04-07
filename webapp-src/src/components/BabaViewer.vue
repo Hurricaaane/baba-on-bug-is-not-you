@@ -5,19 +5,41 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-                            <FeatureViewer v-bind:features="mergedData.features" class="features"/>
+                            <FeatureViewer v-bind:features="mergedData.features" />
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    things
+                <div class="col-6"  v-if="mergedData.units">
+                    <div class="log" v-for="unit in mergedData.units.array" v-bind:style="{ position: 'absolute',
+                            left: unit.vXPOS * 20 + 'px',
+                            top: unit.vYPOS * 20 + 'px',
+                            'font-size': '' + '0.7em',
+                            transform: 'rotate(10deg)'
+                             }">
+                        {{unit.sUNITNAME}}
+                    </div>
+                    <!--{{mergedData.units.array.map(u => u.strings_UNITNAME)}}-->
                 </div>
             </div>
-            <div class="row">
-                <div class="logs">
-                    <div class="log" v-bind:key="index" v-for="(bit,index) in bits">{{ bit }}</div>
-                </div>
-            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <!--<div class="row">-->
+                <!--<div class="logs">-->
+                    <!--<div class="log" v-bind:key="index" v-for="(bit,index) in bits">{{ bit }}</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -90,6 +112,7 @@
 
                     const parsedData = JSON.parse(data);
                     Object.assign(this.mergedData, parsedData);
+                    this.$forceUpdate();
                 }
             }
         }
